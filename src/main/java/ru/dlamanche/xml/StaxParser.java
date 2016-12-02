@@ -1,19 +1,16 @@
-package ru.dlamanche.parser;
+package ru.dlamanche.xml;
 
-import com.google.common.base.Strings;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.dlamanche.entity.NewsDto;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.BufferedInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,7 +20,6 @@ import java.util.List;
  * @author Dmitry Shuplyakov
  */
 public class StaxParser {
-
 
     private static final Logger log = LoggerFactory.getLogger(StaxParser.class);
 

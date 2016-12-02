@@ -4,12 +4,14 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.dlamanche.config.MainConfig;
+import ru.dlamanche.entity.NewsDto;
 import ru.dlamanche.http.HttpClient;
-import ru.dlamanche.parser.StaxParser;
+import ru.dlamanche.xml.StaxParser;
+import ru.dlamanche.server.HttpServer;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Date: 02.12.2016
@@ -30,11 +32,21 @@ public class NewsImporter {
     @Inject
     StaxParser staxParser;
 
-    public void start() {
+    @Inject
+    DataCollector dataCollector;
 
+    @Inject
+    HttpServer httpServer;
+
+    public void start() {
+        loadNews();
+        httpServer.run();
+    }
+
+    private void loadNews() {
         try {
             InputStream stream = httpClient.sendGet(mainConfig.yandexUrl);
-            staxParser.parseNews(new BufferedInputStream(stream));
+            dataCollector.setNews(staxParser.parseNews(new BufferedInputStream(stream)));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
