@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Date: 02.12.2016
@@ -63,21 +64,20 @@ public class HttpClient {
      * @throws IOException
      */
     @NotNull
-    public String sendGet(@NotNull String uri) throws IOException {
+    public InputStream sendGet(@NotNull String uri) throws IOException {
         HttpGet httpGet = new HttpGet(uri);
         log.info(httpGet.toString());
         HttpEntity httpEntity = null;
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);
-            String response = EntityUtils.toString(httpEntity = httpResponse.getEntity(), Charsets.UTF_8);
+            InputStream result = httpResponse.getEntity().getContent();
             StatusLine statusLine = httpResponse.getStatusLine();
             if (statusLine.getStatusCode() < 200 || statusLine.getStatusCode() > 300) {
                 throw new IOException(httpClientName + " request failed. HTTP code: " + statusLine.getStatusCode()
-                        + "\n Request URL: " + uri
-                        + "\n Response body: " + response);
+                        + "\n Request URL: " + uri);
             }
-            log.info(httpClientName + " return " + statusLine + " with result: " + response);
-            return response;
+            log.info(httpClientName + " return " + statusLine);
+            return result;
         } finally {
             EntityUtils.consumeQuietly(httpEntity);
         }
