@@ -80,7 +80,6 @@ public class StaxParser {
         }
 
         log.info("Parsed news: " + result.size());
-        log.info(result.toString());
         return result;
     }
 
