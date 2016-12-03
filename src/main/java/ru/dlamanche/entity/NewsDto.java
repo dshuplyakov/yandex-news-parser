@@ -2,13 +2,15 @@ package ru.dlamanche.entity;
 
 import com.google.common.base.MoreObjects;
 
+import java.io.Serializable;
+
 /**
  * Date: 02.12.2016
  * Time: 13:28
  *
  * @author Dmitry Shuplyakov
  */
-public class NewsDto {
+public class NewsDto implements Serializable {
 
     private String title;
     private String descr;

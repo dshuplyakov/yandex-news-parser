@@ -3,7 +3,8 @@ package ru.dlamanche.server;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import ru.dlamanche.DataCollector;
+import ru.dlamanche.storage.LocalProvider;
+import ru.dlamanche.storage.StorageProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +20,11 @@ import java.io.IOException;
 public class NewsHandler extends AbstractHandler {
 
     public static final String APPLICATION_JSON_CONTENT_TYPE = "application/json; charset=utf-8";
-    DataCollector dataCollector;
+    StorageProvider storageProvider;
     ObjectMapper mapper;
 
-    public NewsHandler(DataCollector dataCollector) {
-        this.dataCollector = dataCollector;
+    public NewsHandler(StorageProvider storageProvider) {
+        this.storageProvider = storageProvider;
         mapper = new ObjectMapper();
     }
 
@@ -35,7 +36,7 @@ public class NewsHandler extends AbstractHandler {
             ServletException {
         response.setContentType(APPLICATION_JSON_CONTENT_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(mapper.writeValueAsString(dataCollector.getNews()));
+        response.getWriter().println(mapper.writeValueAsString(storageProvider.getList("news")));
         baseRequest.setHandled(true);
     }
 

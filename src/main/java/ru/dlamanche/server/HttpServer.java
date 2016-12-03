@@ -2,7 +2,10 @@ package ru.dlamanche.server;
 
 import com.google.inject.Inject;
 import org.eclipse.jetty.server.*;
-import ru.dlamanche.DataCollector;
+import ru.dlamanche.storage.StorageProvider;
+
+import java.net.BindException;
+import java.util.Random;
 
 
 /**
@@ -14,14 +17,19 @@ import ru.dlamanche.DataCollector;
 public class HttpServer {
 
     @Inject
-    DataCollector dataCollector;
+    StorageProvider storageProvider;
+
+    private int port = 8080;
 
     public void run() {
-        Server server = new Server(8080);
-        server.setHandler(new NewsHandler(dataCollector));
+        Server server = new Server(port);
+        server.setHandler(new NewsHandler(storageProvider));
         try {
             server.start();
             server.join();
+        } catch (BindException e) {
+            port++;
+            run();
         } catch (Exception e) {
             throw new IllegalStateException(e.getMessage(), e);
         }
