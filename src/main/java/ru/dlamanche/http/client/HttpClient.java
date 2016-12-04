@@ -1,6 +1,5 @@
-package ru.dlamanche.http;
+package ru.dlamanche.http.client;
 
-import com.google.common.base.Charsets;
 import com.google.inject.Singleton;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

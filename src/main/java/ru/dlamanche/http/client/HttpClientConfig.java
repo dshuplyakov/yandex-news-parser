@@ -1,4 +1,4 @@
-package ru.dlamanche.http;
+package ru.dlamanche.http.client;
 
 import com.google.common.base.MoreObjects;
 

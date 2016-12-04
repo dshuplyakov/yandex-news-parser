@@ -1,11 +1,8 @@
 package ru.dlamanche.provider;
 
 import com.google.inject.AbstractModule;
-import ru.dlamanche.storage.HazelcastProvider;
-import ru.dlamanche.storage.LocalProvider;
 import ru.dlamanche.config.MainConfig;
-import ru.dlamanche.http.HttpClient;
-import ru.dlamanche.storage.StorageProvider;
+import ru.dlamanche.http.client.HttpClient;
 
 /**
  * Date: 02.12.2016
@@ -24,8 +21,6 @@ public class ConfigModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(MainConfig.class).toInstance(mainConfig);
-        bind(LocalProvider.class).asEagerSingleton();
-        bind(StorageProvider.class).toInstance(new HazelcastProvider());
         bind(HttpClient.class).toInstance(new HttpClient("http-crawler", mainConfig.httpClientConfig));
     }
 }

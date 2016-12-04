@@ -5,6 +5,7 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Date: 02.12.2016
@@ -12,7 +13,9 @@ import java.util.List;
  *
  * @author Dmitry Shuplyakov
  */
-public class HazelcastProvider implements StorageProvider {
+public class HazelcastProvider {
+
+    private final static String DEFAULT_MAP = "News";
 
     HazelcastInstance instance;
 
@@ -21,13 +24,15 @@ public class HazelcastProvider implements StorageProvider {
         instance = Hazelcast.newHazelcastInstance(cfg);
     }
 
-    @Override
-    public <E> List<E> getList(String name) {
-        return instance.getList(name);
+    public HazelcastInstance getInstance() {
+        return instance;
     }
 
-    @Override
-    public <E> void setList(List<E> list, String name) {
-        instance.getList(name).addAll(list);
+    public <E> Map<String, List<E>> getMap() {
+        return instance.getMap(DEFAULT_MAP);
+    }
+
+    public <E> void addToMap(List<E> list, String url) {
+        instance.getMap(DEFAULT_MAP).put(url, list);
     }
 }

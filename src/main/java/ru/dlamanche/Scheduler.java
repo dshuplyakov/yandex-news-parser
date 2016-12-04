@@ -1,7 +1,7 @@
 package ru.dlamanche;
 
 import com.google.inject.Inject;
-import ru.dlamanche.storage.StorageProvider;
+import ru.dlamanche.storage.HazelcastProvider;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,15 +16,17 @@ import java.util.concurrent.TimeUnit;
 public class Scheduler {
 
     @Inject
-    StorageProvider storageProvider;
+    HazelcastProvider hazelcastProvider;
 
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
-    public void start() {
-
+    public void showStats() {
         scheduler.scheduleWithFixedDelay(() -> {
-            System.out.println(storageProvider.getList("news").size());
+            System.out.println(getStat());
         }, 0, 5, TimeUnit.SECONDS);
+    }
 
+    private String getStat() {
+        return String.format("Rss proceed: %d", hazelcastProvider.getMap().size());
     }
 }

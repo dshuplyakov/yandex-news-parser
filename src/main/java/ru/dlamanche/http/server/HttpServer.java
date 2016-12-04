@@ -1,11 +1,9 @@
-package ru.dlamanche.server;
+package ru.dlamanche.http.server;
 
 import com.google.inject.Inject;
-import org.eclipse.jetty.server.*;
-import ru.dlamanche.storage.StorageProvider;
+import org.eclipse.jetty.server.Server;
 
 import java.net.BindException;
-import java.util.Random;
 
 
 /**
@@ -17,13 +15,13 @@ import java.util.Random;
 public class HttpServer {
 
     @Inject
-    StorageProvider storageProvider;
+    PageHandler pageHandler;
 
     private int port = 8080;
 
     public void run() {
         Server server = new Server(port);
-        server.setHandler(new NewsHandler(storageProvider));
+        server.setHandler(pageHandler);
         try {
             server.start();
             server.join();
