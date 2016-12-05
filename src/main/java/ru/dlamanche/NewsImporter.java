@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.dlamanche.http.server.HttpServer;
+import ru.dlamanche.provider.StaticContext;
 
 /**
  * Date: 02.12.2016
@@ -21,9 +22,14 @@ public class NewsImporter {
     @Inject
     Scheduler scheduler;
 
+    @Inject
+    StaticContext staticContext;
+
     public void start() {
+        staticContext.configure();
         scheduler.showStats();
         httpServer.run();
     }
+
 
 }
