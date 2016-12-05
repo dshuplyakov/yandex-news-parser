@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.dlamanche.http.server.HttpServer;
 import ru.dlamanche.provider.StaticContext;
+import ru.dlamanche.statistic.Scheduler;
 
 /**
  * Date: 02.12.2016

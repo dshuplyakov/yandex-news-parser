@@ -53,6 +53,21 @@ public class HttpClient {
                 .setRetryHandler(
                         new DefaultHttpRequestRetryHandler(conf.retryCount, conf.requestSentRetryEnabled))
                 .build();
+
+        shutdownHook();
+    }
+
+    public void shutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    log.info("Closing httpClient " + httpClientName);
+                    httpClient.close();
+                } catch (IOException e) {
+                    log.error("Can't close httpClient " + httpClientName + " : " + e);
+                }
+            }
+        });
     }
 
     /**
@@ -79,14 +94,6 @@ public class HttpClient {
             return result;
         } finally {
             EntityUtils.consumeQuietly(httpEntity);
-        }
-    }
-
-    public void shutdown() {
-        try {
-            httpClient.close();
-        } catch (IOException e) {
-            log.error("Cant close httpClient " + httpClientName + " : " + e);
         }
     }
 }

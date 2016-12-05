@@ -3,6 +3,8 @@ package ru.dlamanche.storage;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.Map;
  */
 public class HazelcastProvider {
 
+    private static final Logger log = LoggerFactory.getLogger(HazelcastProvider.class);
+
     private final static String DEFAULT_MAP = "News";
 
     HazelcastInstance instance;
@@ -22,6 +26,16 @@ public class HazelcastProvider {
     public HazelcastProvider() {
         Config cfg = new Config();
         instance = Hazelcast.newHazelcastInstance(cfg);
+        shutdownHook();
+    }
+
+    public void shutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                log.info("Closing hazelcast");
+                instance.shutdown();
+            }
+        });
     }
 
     public HazelcastInstance getInstance() {
